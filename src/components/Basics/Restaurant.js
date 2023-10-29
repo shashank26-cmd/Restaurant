@@ -1,26 +1,30 @@
-import React from 'react'
-import "./Style.css"
+import React, { useState } from 'react';
+import './Style.css';
+import Menu from './menuApi.js';
+import MenuCard from './MenuCard';
+import Navbar from './Navbar';
+
+const uniqueList = [...new Set(Menu.map((currElem) => currElem.category)), 'All'];
 
 const Restaurant = () => {
+  const [menuData, setMenuData] = useState(Menu);
+  const [menuList, setMenuList] = useState(uniqueList);
 
-    const myStyle={color:"red"};
+  const filterItem = (category) => {
+    if (category === 'All') {
+      setMenuData(Menu);
+    } else {
+      const updatedList = Menu.filter((currElem) => currElem.category === category);
+      setMenuData(updatedList);
+    }
+  };
+
   return (
     <>
-    
-    <div className='card-container'> 
-    <div className='card'>
-<div className='card-body'>
-    <span className='card-number card-circle subtle'>1</span>
-<span className='card-author subtle' style={myStyle}>Breakfast</span>
+      <Navbar filterItem={filterItem} menuList={menuList} />
+      <MenuCard menuData={menuData} />
+    </>
+  );
+};
 
-</div>
-
-
-    </div>
-    </div>
-    
-     </>
-  )
-}
-
-export default Restaurant
+export default Restaurant;
